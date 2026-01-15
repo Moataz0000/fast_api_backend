@@ -39,7 +39,7 @@ async def get_book_by_id(book_id: int) -> dict:
     )
 
 
-@app.put("api/book/{book_id}/update")
+@app.put("/api/book/{book_id}/update")
 async def update_book(book_id: int, book_updated_data: BookUpdate) -> dict:
     for book in BOOKS:
         if book["id"] == book_id:
@@ -49,7 +49,21 @@ async def update_book(book_id: int, book_updated_data: BookUpdate) -> dict:
             book["language"] == book_updated_data.language
 
             return book
-    return HTTPException(
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=f"The book with this id '{book_id}' is not found.",
+    )
+
+
+@app.delete("/api/book/{book_id}/delete", status_code=status.HTTP_204_NO_CONTENT)
+async def remove_book(book_id: int) -> None:
+    for book in BOOKS:
+        if book["id"] == book_id:
+            BOOKS.remove(book)
+
+            return {}
+
+    raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"The book with this id '{book_id}' is not found.",
     )
