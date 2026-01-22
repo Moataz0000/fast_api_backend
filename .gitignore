@@ -11,4 +11,3 @@ wheels/
 .DB_Store
 DB_Store
 .env
-./src/.env
