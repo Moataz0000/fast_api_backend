@@ -10,7 +10,7 @@ from .books.routes import book_router
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("Server is starting...")
-    await init_db()
+    init_db()
     yield
     print("Server is Stopping...")
 

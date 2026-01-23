@@ -59,3 +59,8 @@ async def remove_book(book_id: int) -> None:
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"The book with this id '{book_id}' is not found.",
     )
+
+
+@book_router.get("/health/checks", status_code=status.HTTP_200_OK)
+def read_api_health():
+    return {"status": "OK"}
