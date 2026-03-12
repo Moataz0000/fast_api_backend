@@ -9,6 +9,7 @@ from .domain.service.task import TaskService
 from .schema import TaskCreateSchema, TaskRetrieveSchema, TaskUpdateSchema
 
 Base.metadata.create_all(bind=engine)
+
 app = FastAPI(
     title="Todo Task Backend", version="1", description="This is a todo task api."
 )
