@@ -28,7 +28,7 @@ def health_check():
     return {"Health": "Ok 200"}
 
 
-@app.post("/task/create/", response_model=TaskRetrieveSchema)
+@app.post("/tasks/create/", response_model=TaskRetrieveSchema)
 async def create_task(task: TaskCreateSchema, db: Session = Depends(get_db)):
     return TaskService.create_task(db, task)
 
@@ -50,7 +50,7 @@ async def get_task_detail(task_id: int, db: Session = Depends(get_db)):
     return task_detail
 
 
-@app.delete("/task/{task_id}/delete/", status_code=status.HTTP_204_NO_CONTENT)
+@app.delete("/tasks/{task_id}/delete/", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_task_view(task_id: int, db: Session = Depends(get_db)):
     task = TaskSelector.get_task_by_id(db, task_id)
     if not task:
