@@ -3,12 +3,13 @@ from typing import List
 from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
 
+from domain.selector.task import TaskSelector
+
 from .db.database import Base, SessionLocal, engine
 from .db.models import Task
 from .schema import TaskCreateSchema, TaskRetrieveSchema
 
 Base.metadata.create_all(bind=engine)
-
 
 app = FastAPI()
 
@@ -38,5 +39,5 @@ def create_task(task: TaskCreateSchema, db: Session = Depends(get_db)):
 
 @app.get("/tasks/", response_model=List[TaskRetrieveSchema])
 def get_tasks(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    tasks = db.query(Task).offset(skip).limit(limit).all()
+    tasks = TaskSelector.get_all_tasks(db, skip, limit)
     return tasks
