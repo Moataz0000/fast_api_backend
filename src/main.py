@@ -1,12 +1,11 @@
 from typing import List
 
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, HTTPException, status
 from sqlalchemy.orm import Session
 
-from domain.selector.task import TaskSelector
-
 from .db.database import Base, SessionLocal, engine
-from .db.models import Task
+from .domain.selector.task import TaskSelector
+from .domain.service.create_task import TaskService
 from .schema import TaskCreateSchema, TaskRetrieveSchema
 
 Base.metadata.create_all(bind=engine)
@@ -29,15 +28,22 @@ def health_check():
 
 
 @app.post("/task/create/", response_model=TaskRetrieveSchema)
-def create_task(task: TaskCreateSchema, db: Session = Depends(get_db)):
-    db_task = Task(title=task.title, description=task.description)
-    db.add(db_task)
-    db.commit()
-    db.refresh(db_task)
-    return db_task
+async def create_task(task: TaskCreateSchema, db: Session = Depends(get_db)):
+    return TaskService.create_task(db, task)
 
 
 @app.get("/tasks/", response_model=List[TaskRetrieveSchema])
-def get_tasks(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+async def get_tasks(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     tasks = TaskSelector.get_all_tasks(db, skip, limit)
     return tasks
+
+
+@app.get("/tasks/{task_id}/detail/", response_model=TaskRetrieveSchema)
+async def get_task_detail(task_id: int, db: Session = Depends(get_db)):
+    task_detail = TaskSelector.get_task_by_id(db, task_id)
+    if not task_detail:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Task with this '{task_id}' is not found!",
+        )
+    return task_detail

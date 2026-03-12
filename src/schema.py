@@ -1,17 +1,15 @@
 from pydantic import BaseModel, ConfigDict
 
 
-class TaskBase(BaseModel):
+class TaskCreateSchema(BaseModel):
     title: str
     description: str | None = None
 
 
-class TaskCreateSchema(TaskBase):
-    pass
-
-
-class TaskRetrieveSchema(TaskBase):
+class TaskRetrieveSchema(BaseModel):
     id: int
+    title: str
+    description: str | None = None
     is_completed: bool
 
     model_config = ConfigDict(from_attributes=True)
