@@ -29,18 +29,18 @@ def health_check():
 
 
 @app.post("/tasks/create/", response_model=TaskRetrieveSchema)
-async def create_task(task: TaskCreateSchema, db: Session = Depends(get_db)):
+async def create_task_view(task: TaskCreateSchema, db: Session = Depends(get_db)):
     return TaskService.create_task(db, task)
 
 
 @app.get("/tasks/", response_model=List[TaskRetrieveSchema])
-async def get_tasks(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+async def get_tasks_view(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     tasks = TaskSelector.get_all_tasks(db, skip, limit)
     return tasks
 
 
 @app.get("/tasks/{task_id}/detail/", response_model=TaskRetrieveSchema)
-async def get_task_detail(task_id: int, db: Session = Depends(get_db)):
+async def get_task_detail_view(task_id: int, db: Session = Depends(get_db)):
     task_detail = TaskSelector.get_task_by_id(db, task_id)
     if not task_detail:
         raise HTTPException(
