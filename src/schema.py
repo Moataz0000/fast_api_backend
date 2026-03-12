@@ -13,3 +13,9 @@ class TaskRetrieveSchema(BaseModel):
     is_completed: bool
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class TaskUpdateSchema(BaseModel):
+    title: str
+    description: str | None = None
+    is_completed: bool
