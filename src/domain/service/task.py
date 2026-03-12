@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 
 from src.db.models import Task
+from src.domain.selector.task import TaskSelector
 from src.schema import TaskCreateSchema, TaskUpdateSchema
 
 
@@ -17,7 +18,7 @@ class TaskService:
     def update_task(
         db: Session, task_id: int, task_data: TaskUpdateSchema
     ) -> Task | None:
-        task = db.query(Task).filter(Task.id == task_id).first()
+        task = TaskSelector.get_task_by_id(db, task_id)
         if not task:
             return None
         # exclude_unset=True: ensures only the fields the client actually sent get updated
