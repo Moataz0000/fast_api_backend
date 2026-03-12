@@ -12,3 +12,8 @@ class TaskService:
         db.commit()
         db.refresh(db_task)
         return db_task
+
+    @staticmethod
+    def delete_task(db: Session, task: Task) -> None:
+        db.delete(task)
+        db.commit()
