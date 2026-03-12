@@ -9,8 +9,9 @@ from .domain.service.create_task import TaskService
 from .schema import TaskCreateSchema, TaskRetrieveSchema
 
 Base.metadata.create_all(bind=engine)
-
-app = FastAPI()
+app = FastAPI(
+    title="Todo Task Backend", version="1", description="This is a todo task api."
+)
 
 
 def get_db():
