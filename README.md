@@ -6,7 +6,7 @@ A modern CRUD backend for managing tasks, built with FastAPI and SQLite.
 
 1. Pull or clone the repository
    ```bash
-   git clone https://github.com/Moataz0000/FastAPI.git
+   git clone https://github.com/Moataz0000/fast_api_backend.git
    cd FastAPI
    ```
 
