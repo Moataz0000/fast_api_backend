@@ -1,0 +1,11 @@
+.venv
+__pycache__
+*.pyc
+.git
+.github
+.env
+tasks.db
+src/tasks.db
+.pre-commit-config.yaml
+tests/
+*.md
